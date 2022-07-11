@@ -1,15 +1,7 @@
 package src;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.DataInputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.ArrayList;
+import java.io.*;
+import java.util.*;
 
 public class StorageService {
 	private final String FOLDER_PREFIX = "store_";
@@ -26,30 +18,43 @@ public class StorageService {
 			storage.mkdirs();
 	}
 
-	public void put(InputStream is) throws IOException {
+	public void put(String key, InputStream is) throws IOException {
         DataInputStream dis = new DataInputStream(is);
-		String key = dis.readUTF();
-		OutputStream os = new FileOutputStream(this.folder + key);
 		long size = dis.readLong();
+		OutputStream os = new FileOutputStream(this.folder + key);
         byte[] buffer = new byte[1024];
 		int bytes_read;
-
         while (size > 0 && (bytes_read = dis.read(buffer, 0, (int)Math.min(buffer.length, size))) != -1){
             os.write(buffer, 0, bytes_read);
             size -= bytes_read;
         }
-
-        dis.close();
 		os.close();
-		this.key_store.add(key);
+        dis.close();
+		if(!this.key_store.contains(key))
+			this.key_store.add(key);
 		return;
     }
 
-	public String get(Integer key) {
-        return "";
+	public void get(String key, OutputStream os) throws IOException {
+		File file = new File(this.folder + key);
+		if(!file.exists())
+			return;
+		byte[] byte_array = new byte[(int)file.length()];
+		FileInputStream fis = new FileInputStream(file);
+		DataInputStream dis = new DataInputStream(fis);
+		DataOutputStream dos = new DataOutputStream(os);
+		dis.readFully(byte_array, 0, byte_array.length);
+		dos.writeLong(byte_array.length);
+		dos.write(byte_array, 0, byte_array.length);
+		dos.flush();
+		dis.close();
     }
 
-	public void delete(Integer key) {
+	public void delete(String key){
+		File file = new File(this.folder + key);
+		if(file.exists())
+			file.delete();
+		this.key_store.remove(key);
         return;
     }
 

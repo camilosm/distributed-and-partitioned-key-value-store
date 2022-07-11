@@ -1,8 +1,5 @@
 package src;
 
-import src.Hashing;
-import src.StorageService;
-
 import java.io.*;
 import java.net.*;
 
@@ -22,7 +19,7 @@ public class Store {
 		this.ip_mcast_port = ip_mcast_port;
 		this.ip_addr = ip_addr;
         this.store_port = store_port;
-		this.id = this.ip_addr+this.store_port.toString();
+		this.id = this.ip_addr;
 		this.hashed_id = Hashing.hash(this.id);
 
 		InetSocketAddress socket_address = new InetSocketAddress(this.ip_addr, this.store_port);
@@ -40,14 +37,37 @@ public class Store {
         }
 
 		String ip_mcast_addr = args[0];
-		Integer ip_mcast_port = Integer.parseInt(args[1]);
+		Integer ip_mcast_port = Integer.valueOf(args[1]);
 		String ip_addr = args[2];
-		Integer store_port = Integer.parseInt(args[3]);
+		Integer store_port = Integer.valueOf(args[3]);
 
         Store store = new Store(ip_mcast_addr, ip_mcast_port, ip_addr, store_port);
 		while(true){
-			Socket server = store.server_socket.accept();
-			store.storage_service.put(server.getInputStream());
+			Socket socket = store.server_socket.accept();
+			InputStream is = socket.getInputStream();
+			DataInputStream dis = new DataInputStream(is);
+			String op = dis.readUTF();
+			System.out.println(op);
+			String key = dis.readUTF();
+			System.out.println(key);
+			switch(op){
+				case "put":
+					store.storage_service.put(key, is);
+					break;
+				case "get":
+					OutputStream os = socket.getOutputStream();
+					store.storage_service.get(key, os);
+					os.close();
+					break;
+				case "delete":
+					store.storage_service.delete(key);
+					break;
+				default:
+					break;
+			}
+			dis.close();
+			is.close();
+			socket.close();
 		}
     }
 }
