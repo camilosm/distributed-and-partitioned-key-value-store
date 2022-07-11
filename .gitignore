@@ -48,3 +48,6 @@ replay_pid*
 *.code-workspace
 
 # End of https://www.toptal.com/developers/gitignore/api/java,visualstudiocode
+
+# ignoring storage folders
+/store_*
