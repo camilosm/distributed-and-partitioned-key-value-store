@@ -19,10 +19,10 @@ public class Hashing {
 		bytes = md.digest(input.getBytes(StandardCharsets.UTF_8));
 		BigInteger number = new BigInteger(1, bytes);
 
-		StringBuilder hexString = new StringBuilder(number.toString(16));
-		while (hexString.length() < 64)
-			hexString.insert(0, '0');
+		StringBuilder hex_string = new StringBuilder(number.toString(16));
+		while (hex_string.length() < 64)
+			hex_string.insert(0, '0');
 
-		return hexString.toString();
+		return hex_string.toString();
 	}
 }
