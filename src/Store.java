@@ -47,9 +47,7 @@ public class Store {
 			InputStream is = socket.getInputStream();
 			DataInputStream dis = new DataInputStream(is);
 			String op = dis.readUTF();
-			System.out.println(op);
 			String key = dis.readUTF();
-			System.out.println(key);
 			switch(op){
 				case "put":
 					store.storage_service.put(key, is);
