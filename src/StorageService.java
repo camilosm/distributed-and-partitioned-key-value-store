@@ -18,10 +18,9 @@ public class StorageService {
 			storage.mkdirs();
 	}
 
-	public void put(String key, InputStream is) throws IOException {
-        DataInputStream dis = new DataInputStream(is);
-		long size = dis.readLong();
+	public void put(String key, DataInputStream dis) throws IOException {
 		OutputStream os = new FileOutputStream(this.folder + key);
+		long size = dis.readLong();
         byte[] buffer = new byte[1024];
 		int bytes_read;
         while (size > 0 && (bytes_read = dis.read(buffer, 0, (int)Math.min(buffer.length, size))) != -1){
@@ -29,20 +28,18 @@ public class StorageService {
             size -= bytes_read;
         }
 		os.close();
-        dis.close();
 		if(!this.key_store.contains(key))
 			this.key_store.add(key);
 		return;
     }
 
-	public void get(String key, OutputStream os) throws IOException {
+	public void get(String key, DataOutputStream dos) throws IOException {
 		File file = new File(this.folder + key);
 		if(!file.exists())
 			return;
 		byte[] byte_array = new byte[(int)file.length()];
 		FileInputStream fis = new FileInputStream(file);
 		DataInputStream dis = new DataInputStream(fis);
-		DataOutputStream dos = new DataOutputStream(os);
 		dis.readFully(byte_array, 0, byte_array.length);
 		dos.writeLong(byte_array.length);
 		dos.write(byte_array, 0, byte_array.length);

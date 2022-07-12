@@ -4,7 +4,6 @@ import java.io.*;
 import java.net.*;
 
 public class Store {
-
     String ip_mcast_addr;
     Integer ip_mcast_port;
     String ip_addr;
@@ -29,7 +28,6 @@ public class Store {
 		this.storage_service = new StorageService(hashed_id);
     }
 
-
     public static void main(String[] args) throws IOException {
         if(args.length != 4){
             System.err.println("Usage: java Store <IP_mcast_addr> <IP_mcast_port> <node_id> <store_port>");
@@ -50,12 +48,13 @@ public class Store {
 			String key = dis.readUTF();
 			switch(op){
 				case "put":
-					store.storage_service.put(key, is);
+					store.storage_service.put(key, dis);
 					break;
 				case "get":
 					OutputStream os = socket.getOutputStream();
-					store.storage_service.get(key, os);
-					os.close();
+					DataOutputStream dos = new DataOutputStream(os);
+					store.storage_service.get(key, dos);
+					dos.close();
 					break;
 				case "delete":
 					store.storage_service.delete(key);
@@ -64,7 +63,6 @@ public class Store {
 					break;
 			}
 			dis.close();
-			is.close();
 			socket.close();
 		}
     }

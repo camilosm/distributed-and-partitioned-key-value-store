@@ -35,7 +35,6 @@ public class TestClient {
 					System.out.println("Key: " + key);
 					byte[] byte_array = new byte[(int)file.length()];
 					FileInputStream fis = new FileInputStream(file);
-					// BufferedInputStream bis = new BufferedInputStream(fis);
 					DataInputStream dis = new DataInputStream(fis);
 					dis.readFully(byte_array, 0, byte_array.length);
 					dos.writeUTF(key);
@@ -50,7 +49,10 @@ public class TestClient {
 					InputStream is = socket.getInputStream();
 					DataInputStream dis = new DataInputStream(is);
 					long size = dis.readLong();
-					OutputStream os_file = new FileOutputStream(opnd);
+					File folder = new File("received");
+					if(!folder.exists())
+						folder.mkdir();
+					OutputStream os_file = new FileOutputStream("received/" + opnd);
 					byte[] buffer = new byte[1024];
 					int bytes_read;
 					while (size > 0 && (bytes_read = dis.read(buffer, 0, (int)Math.min(buffer.length, size))) != -1){
@@ -63,6 +65,7 @@ public class TestClient {
 				}
 				case "delete":
 					dos.writeUTF(opnd);
+					break;
 				default:
 					break;
 			}
