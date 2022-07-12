@@ -49,30 +49,7 @@ public class Store {
 			}
 		}));
 
-		while(true){
-			Socket socket = store.server_socket.accept();
-			InputStream is = socket.getInputStream();
-			DataInputStream dis = new DataInputStream(is);
-			String op = dis.readUTF();
-			String key = dis.readUTF();
-			switch(op){
-				case "put":
-					store.storage_service.put(key, dis);
-					break;
-				case "get":
-					OutputStream os = socket.getOutputStream();
-					DataOutputStream dos = new DataOutputStream(os);
-					store.storage_service.get(key, dos);
-					dos.close();
-					break;
-				case "delete":
-					store.storage_service.delete(key);
-					break;
-				default:
-					break;
-			}
-			dis.close();
-			socket.close();
-		}
+		TCPhandler tcp_handler = new TCPhandler(store.server_socket, store.storage_service);
+		tcp_handler.start();
     }
 }
