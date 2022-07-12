@@ -21,11 +21,12 @@ public class Store {
 		this.id = this.ip_addr;
 		this.hashed_id = Hashing.hash(this.id);
 
+		this.storage_service = new StorageService(hashed_id);
+
 		InetSocketAddress socket_address = new InetSocketAddress(this.ip_addr, this.store_port);
 		this.server_socket = new ServerSocket();
 		this.server_socket.bind(socket_address);
 
-		this.storage_service = new StorageService(hashed_id);
     }
 
     public static void main(String[] args) throws IOException {
@@ -40,6 +41,18 @@ public class Store {
 		Integer store_port = Integer.valueOf(args[3]);
 
         Store store = new Store(ip_mcast_addr, ip_mcast_port, ip_addr, store_port);
+
+		Runtime.getRuntime().addShutdownHook(
+			new Thread(
+				new Runnable(){
+					@Override
+					public void run() {
+						System.out.println("Storage node at " + store.id + " terminated.");
+					}
+				}
+			)
+		);
+
 		while(true){
 			Socket socket = store.server_socket.accept();
 			InputStream is = socket.getInputStream();
