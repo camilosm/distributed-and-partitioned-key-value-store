@@ -42,16 +42,12 @@ public class Store {
 
         Store store = new Store(ip_mcast_addr, ip_mcast_port, ip_addr, store_port);
 
-		Runtime.getRuntime().addShutdownHook(
-			new Thread(
-				new Runnable(){
-					@Override
-					public void run() {
-						System.out.println("Storage node at " + store.id + " terminated.");
-					}
-				}
-			)
-		);
+		Runtime.getRuntime().addShutdownHook(new Thread(new Runnable(){
+			@Override
+			public void run() {
+				System.out.println("Storage node at " + store.id + " terminated.");
+			}
+		}));
 
 		while(true){
 			Socket socket = store.server_socket.accept();
