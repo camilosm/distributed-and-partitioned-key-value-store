@@ -20,19 +20,19 @@ public class TCPhandler extends Thread{
 				InputStream is = socket.getInputStream();
 				DataInputStream dis = new DataInputStream(is);
 				String op = dis.readUTF();
-				String key = dis.readUTF();
+				String opnd = dis.readUTF();
 				switch(op){
 					case "put":
-						this.storage_service.put(key, dis);
+						this.storage_service.put(opnd, dis);
 						break;
 					case "get":
 						OutputStream os = socket.getOutputStream();
 						DataOutputStream dos = new DataOutputStream(os);
-						this.storage_service.get(key, dos);
+						this.storage_service.get(opnd, dos);
 						dos.close();
 						break;
 					case "delete":
-						this.storage_service.delete(key);
+						this.storage_service.delete(opnd);
 						break;
 					case "view":
 						// this.
