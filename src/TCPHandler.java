@@ -33,7 +33,6 @@ public class TCPHandler extends Thread{
 						OutputStream os = socket.getOutputStream();
 						DataOutputStream dos = new DataOutputStream(os);
 						this.storage_service.get(opnd, dos);
-						dos.close();
 						break;
 					}
 					case "delete":{
@@ -45,13 +44,11 @@ public class TCPHandler extends Thread{
 						OutputStream os = socket.getOutputStream();
 						DataOutputStream dos = new DataOutputStream(os);
 						this.membership_service.view(dos);
-						dos.close();
 						break;
 					}
 					default:
 						break;
 				}
-				dis.close();
 				socket.close();
 			} catch (Exception e) {
 				System.out.println("TCP Handler failed.");

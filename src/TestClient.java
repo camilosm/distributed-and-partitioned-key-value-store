@@ -57,7 +57,6 @@ public class TestClient {
 						size -= bytes_read;
 					}
 					os_file.close();
-					dis.close();
 					break;
 				}
 				case "delete":
