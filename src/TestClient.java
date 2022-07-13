@@ -12,7 +12,6 @@ public class TestClient {
 	public static void main(String args[]) throws IOException {
 		if(args.length < 2 || args.length > 3)
 			usage();
-
 		String node_ap[] = args[0].split(":");
 		if(node_ap.length != 2)
 			usage();
