@@ -3,11 +3,11 @@ package src;
 import java.io.*;
 import java.net.*;
 
-public class TCPhandler extends Thread{
+public class TCPHandler extends Thread{
 	ServerSocket server_socket;
 	StorageService storage_service;
 
-	public TCPhandler(ServerSocket server_socket, StorageService storage_service){
+	public TCPHandler(ServerSocket server_socket, StorageService storage_service){
 		this.server_socket = server_socket;
 		this.storage_service = storage_service;
 	}
