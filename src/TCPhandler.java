@@ -35,7 +35,7 @@ public class TCPhandler extends Thread{
 						this.storage_service.delete(opnd);
 						break;
 					case "view":
-						// this.
+						// dependant on membership service
 					default:
 						break;
 				}
