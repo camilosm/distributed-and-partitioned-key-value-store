@@ -10,9 +10,10 @@ public class Store {
     Integer store_port;
 	String hashed_id;
 	String id;
+	MulticastSocket multicast_socket;
+	MembershipService membership_service;
 	ServerSocket server_socket;
 	StorageService storage_service;
-	MembershipService membership_service;
 
     public Store(String ip_mcast_addr, int ip_mcast_port, String ip_addr, int store_port) throws IOException {
         this.ip_mcast_addr = ip_mcast_addr;
@@ -22,14 +23,12 @@ public class Store {
 		this.id = this.ip_addr;
 		this.hashed_id = Hashing.hash(this.id);
 
-		this.storage_service = new StorageService(hashed_id);
+		this.membership_service = new MembershipService(this.id, this.hashed_id);
 
-		// InetSocketAddress socket_address = new InetSocketAddress(this.ip_addr, this.store_port);
 		InetAddress bind_addr = InetAddress.getByName(this.ip_addr);
 		this.server_socket = new ServerSocket(this.store_port, 0, bind_addr);
-		// this.server_socket.bind(socket_address);
 
-		this.membership_service = new MembershipService(this.id, this.hashed_id);
+		this.storage_service = new StorageService(hashed_id);
     }
 
     public static void main(String[] args) throws IOException {
