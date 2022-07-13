@@ -12,6 +12,7 @@ public class Store {
 	String id;
 	ServerSocket server_socket;
 	StorageService storage_service;
+	MembershipService membership_service;
 
     public Store(String ip_mcast_addr, int ip_mcast_port, String ip_addr, int store_port) throws IOException {
         this.ip_mcast_addr = ip_mcast_addr;
@@ -27,6 +28,7 @@ public class Store {
 		this.server_socket = new ServerSocket();
 		this.server_socket.bind(socket_address);
 
+		this.membership_service = new MembershipService(this.id);
     }
 
     public static void main(String[] args) throws IOException {
@@ -49,7 +51,7 @@ public class Store {
 			}
 		}));
 
-		TCPhandler tcp_handler = new TCPhandler(store.server_socket, store.storage_service);
+		TCPHandler tcp_handler = new TCPHandler(store.server_socket, store.storage_service, store.membership_service);
 		tcp_handler.start();
     }
 }

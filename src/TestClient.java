@@ -66,7 +66,18 @@ public class TestClient {
 				default:
 					break;
 			}
-			dos.close();
+			socket.close();
+		}
+		else if(op.equals("view")){
+			Socket socket = new Socket(node_ip, node_port);
+			OutputStream os = socket.getOutputStream();
+			DataOutputStream dos = new DataOutputStream(os);
+			dos.writeUTF(op);
+			InputStream is = socket.getInputStream();
+			DataInputStream dis = new DataInputStream(is);
+			Integer n = dis.readInt();
+			for(int i=0; i<n; i++)
+				System.out.println("IP: " + dis.readUTF() + " -> membership counter: " + dis.readInt());
 			socket.close();
 		}
 	}

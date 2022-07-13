@@ -19,5 +19,8 @@ get: all
 delete: all
 	@java src.TestClient 127.0.0.1:2013 delete 93fa44bc8925f5fe1c081688cff0c9b4e90c26622faadeefe8e11a705e257616
 
+view: all
+	@java src.TestClient 127.0.0.1:2013 view
+
 terminate:
 	@if jps | grep -q Store; then kill $(shell jps | grep Store | tr -d 'Store'); fi;
