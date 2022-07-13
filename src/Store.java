@@ -24,11 +24,12 @@ public class Store {
 
 		this.storage_service = new StorageService(hashed_id);
 
-		InetSocketAddress socket_address = new InetSocketAddress(this.ip_addr, this.store_port);
-		this.server_socket = new ServerSocket();
-		this.server_socket.bind(socket_address);
+		// InetSocketAddress socket_address = new InetSocketAddress(this.ip_addr, this.store_port);
+		InetAddress bind_addr = InetAddress.getByName(this.ip_addr);
+		this.server_socket = new ServerSocket(this.store_port, 0, bind_addr);
+		// this.server_socket.bind(socket_address);
 
-		this.membership_service = new MembershipService(this.id);
+		this.membership_service = new MembershipService(this.id, this.hashed_id);
     }
 
     public static void main(String[] args) throws IOException {
