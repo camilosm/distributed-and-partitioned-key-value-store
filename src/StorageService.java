@@ -10,7 +10,7 @@ public class StorageService {
 	private ArrayList<String> key_store;
 
 	public StorageService(String id){
-		this.key_store = new ArrayList<>();
+		this.key_store = new ArrayList<String>();
 		this.id = id;
 		this.folder = FOLDER_PREFIX + this.id + "/";
 		File storage = new File(this.folder);
