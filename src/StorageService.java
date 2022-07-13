@@ -4,10 +4,10 @@ import java.io.*;
 import java.util.*;
 
 public class StorageService {
-	private final String FOLDER_PREFIX = "store_";
-	private ArrayList<String> key_store;
 	private String id;
+	private final String FOLDER_PREFIX = "store_";
 	private String folder;
+	private ArrayList<String> key_store;
 
 	public StorageService(String id){
 		this.key_store = new ArrayList<>();
