@@ -43,7 +43,6 @@ public class StorageService {
 		dis.readFully(byte_array, 0, byte_array.length);
 		dos.writeLong(byte_array.length);
 		dos.write(byte_array, 0, byte_array.length);
-		dos.flush();
 		dis.close();
     }
 

@@ -26,7 +26,6 @@ public class TestClient {
 			OutputStream os = socket.getOutputStream();
 			DataOutputStream dos = new DataOutputStream(os);
 			dos.writeUTF(op);
-			dos.flush();
 			switch(op){
 				case "put":{
 					File file = new File(opnd);
@@ -39,7 +38,6 @@ public class TestClient {
 					dos.writeUTF(key);
 					dos.writeLong(byte_array.length);
 					dos.write(byte_array, 0, byte_array.length);
-					dos.flush();
 					dis.close();
 					break;
 				}
