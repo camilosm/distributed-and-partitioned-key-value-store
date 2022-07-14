@@ -26,33 +26,36 @@ public class TestClient {
 			OutputStream os = socket.getOutputStream();
 			DataOutputStream dos = new DataOutputStream(os);
 			dos.writeUTF(op);
+			InputStream is = socket.getInputStream();
+			DataInputStream dis_socket = new DataInputStream(is);
 			switch(op){
 				case "put":{
 					File file = new File(opnd);
 					String key = Hashing.hash(file.getAbsolutePath());
 					System.out.println("Key: " + key);
+					dos.writeUTF(key);
 					byte[] byte_array = new byte[(int)file.length()];
 					FileInputStream fis = new FileInputStream(file);
-					DataInputStream dis = new DataInputStream(fis);
-					dis.readFully(byte_array, 0, byte_array.length);
-					dos.writeUTF(key);
+					DataInputStream dis_file = new DataInputStream(fis);
+					dis_file.readFully(byte_array, 0, byte_array.length);
 					dos.writeLong(byte_array.length);
 					dos.write(byte_array, 0, byte_array.length);
-					dis.close();
+					dis_file.close();
+					String status = dis_socket.readUTF();
+					if(status.equals("failed"))
+						System.err.println("Wrong node.");
 					break;
 				}
 				case "get":{
 					dos.writeUTF(opnd);
-					InputStream is = socket.getInputStream();
-					DataInputStream dis = new DataInputStream(is);
-					long size = dis.readLong();
+					long size = dis_socket.readLong();
 					File folder = new File("received");
 					if(!folder.exists())
 						folder.mkdir();
 					OutputStream os_file = new FileOutputStream("received/" + opnd);
 					byte[] buffer = new byte[1024];
 					int bytes_read;
-					while (size > 0 && (bytes_read = dis.read(buffer, 0, (int)Math.min(buffer.length, size))) != -1){
+					while (size > 0 && (bytes_read = dis_socket.read(buffer, 0, (int)Math.min(buffer.length, size))) != -1){
 						os_file.write(buffer, 0, bytes_read);
 						size -= bytes_read;
 					}
