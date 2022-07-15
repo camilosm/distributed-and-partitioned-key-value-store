@@ -76,8 +76,4 @@ public class MembershipService {
 				node_hashed_id = cluster_key;
 		return node_hashed_id;
 	}
-
-	public String id(String hashed_id){
-		return this.cluster_membership.get(hashed_id);
-	}
 }
