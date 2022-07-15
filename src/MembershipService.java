@@ -3,6 +3,7 @@ package src;
 import java.io.*;
 import java.net.*;
 import java.util.*;
+import java.util.concurrent.ConcurrentSkipListMap;
 
 public class MembershipService {
 	String ip_mcast_addr;
@@ -12,7 +13,7 @@ public class MembershipService {
 	String folder_path;
 	Integer membership_counter;
 	SortedMap<String,String> cluster_membership;
-	HashMap<String,Integer> members_counters;
+	ConcurrentSkipListMap<String,Integer> members_counters;
 	InetSocketAddress group;
 	NetworkInterface net_int;
 	MulticastSocket multicast_socket;
@@ -25,7 +26,7 @@ public class MembershipService {
 		this.folder_path = folder_path;
 		this.membership_counter = -1;
 		this.cluster_membership = new TreeMap<String,String>();
-		this.members_counters = new HashMap<String,Integer>();
+		this.members_counters = new ConcurrentSkipListMap<String,Integer>();
 		this.multicast_socket = new MulticastSocket(this.ip_mcast_port);
 		InetAddress mcast_addr = InetAddress.getByName(this.ip_mcast_addr);
 		InetSocketAddress mcast_socket_addr = new InetSocketAddress(mcast_addr, this.ip_mcast_port);
