@@ -93,8 +93,14 @@ public class TestClient {
 				System.out.println("IP: " + dis_socket.readUTF() + " -> membership counter: " + dis_socket.readInt());
 		}
 		else{
-			System.err.println("Unknow operation.");
-			System.exit(1);
+			switch(op){
+				case "join":
+				case "leave":
+					break;
+				default:
+					System.err.println("Unknow operation.");
+					System.exit(1);
+			}
 		}
 		socket.close();
 	}
