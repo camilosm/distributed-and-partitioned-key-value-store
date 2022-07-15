@@ -42,12 +42,17 @@ public class TestClient {
 					dos.write(byte_array, 0, byte_array.length);
 					dis_file.close();
 					String status = dis_socket.readUTF();
-					if(status.equals("failed"))
+					if(status.equals("key"))
 						System.err.println("Wrong node.");
 					break;
 				}
 				case "get":{
 					dos.writeUTF(opnd);
+					String status = dis_socket.readUTF();
+					if(status.equals("failed")){
+						System.err.println("File not found.");
+						break;
+					}
 					long size = dis_socket.readLong();
 					File folder = new File("received");
 					if(!folder.exists())
@@ -64,6 +69,9 @@ public class TestClient {
 				}
 				case "delete":
 					dos.writeUTF(opnd);
+					String status = dis_socket.readUTF();
+					if(status.equals("key"))
+						System.err.println("Wrong node.");
 					break;
 				default:
 					break;

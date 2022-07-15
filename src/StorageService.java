@@ -29,10 +29,12 @@ public class StorageService {
 		return;
     }
 
+	public boolean contains(String key){
+		return this.key_store.contains(key);
+	}
+
 	public void get(String key, DataOutputStream dos) throws IOException {
 		File file = new File(this.folder_path + key);
-		if(!file.exists())
-			return;
 		byte[] byte_array = new byte[(int)file.length()];
 		FileInputStream fis = new FileInputStream(file);
 		DataInputStream dis = new DataInputStream(fis);

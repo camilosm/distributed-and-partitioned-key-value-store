@@ -29,7 +29,7 @@ public class TCPHandler extends Thread{
 					opnd = dis.readUTF();
 					String correct_node = this.membership_service.hashed_id(opnd);
 					if(!correct_node.equals(this.storage_service.id)){
-						dos.writeUTF("failed");
+						dos.writeUTF("key");
 						socket.close();
 						continue;
 					}
@@ -40,8 +40,12 @@ public class TCPHandler extends Thread{
 							break;
 							}
 						case "get":{
-							this.storage_service.get(opnd, dos);
-							dos.writeUTF("sucess");
+							if(this.storage_service.contains(opnd)){
+								dos.writeUTF("sucess");
+								this.storage_service.get(opnd, dos);
+							}
+							else
+								dos.writeUTF("failed");
 							break;
 						}
 						case "delete":{
@@ -57,7 +61,8 @@ public class TCPHandler extends Thread{
 					this.membership_service.view(dos);
 				socket.close();
 			} catch (Exception e) {
-				System.out.println("TCP Handler failed.");
+				System.err.println("TCP Handler failed.");
+				System.exit(1);
 				// e.printStackTrace();
 			}
 		}
