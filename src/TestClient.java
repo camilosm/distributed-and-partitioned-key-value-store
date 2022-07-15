@@ -86,14 +86,13 @@ public class TestClient {
 				default:
 					break;
 			}
-			socket.close();
 		}
 		else if(op.equals("view")){
 			Integer n = dis_socket.readInt();
 			for(int i=0; i<n; i++)
 				System.out.println("IP: " + dis_socket.readUTF() + " -> membership counter: " + dis_socket.readInt());
-			socket.close();
 		}
+		socket.close();
 	}
 }
 

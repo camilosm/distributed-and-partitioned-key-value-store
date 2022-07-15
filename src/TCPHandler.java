@@ -61,8 +61,20 @@ public class TCPHandler extends Thread{
 							break;
 					}
 				}
-				else
-					this.membership_service.view(dos);
+				else{
+					switch(op){
+						case "view":
+							this.membership_service.view(dos);
+							break;
+						case "join":
+							this.membership_service.join();
+							break;
+						case "leave":
+							this.membership_service.leave();
+							break;
+					}
+
+				}
 				socket.close();
 			} catch (Exception e) {
 				System.err.println("TCP Handler failed.");
