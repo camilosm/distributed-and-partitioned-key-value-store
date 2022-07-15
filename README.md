@@ -4,7 +4,7 @@ Compilar o projeto:
 
 `$ make`
 
-Executar um nó:
+Iniciar um servidor:
 
 `$ java Store <IP_mcast_addr> <IP_mcast_port> <IP_addr>  <Store_port>`
 
