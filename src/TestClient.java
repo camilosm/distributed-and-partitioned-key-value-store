@@ -32,16 +32,16 @@ public class TestClient {
 		String node_ip = node_ap[0];
 		Integer node_port = Integer.valueOf(node_ap[1]);
 		String op = args[1];
+		Socket socket = new Socket(node_ip, node_port);
+		OutputStream os = socket.getOutputStream();
+		DataOutputStream dos = new DataOutputStream(os);
+		dos.writeUTF(op);
+		InputStream is = socket.getInputStream();
+		DataInputStream dis_socket = new DataInputStream(is);
 		if(op.equals("put") || op.equals("get") || op.equals("delete")){
 			if(args.length != 3)
 				usage();
 			String opnd = args[2];
-			Socket socket = new Socket(node_ip, node_port);
-			OutputStream os = socket.getOutputStream();
-			DataOutputStream dos = new DataOutputStream(os);
-			dos.writeUTF(op);
-			InputStream is = socket.getInputStream();
-			DataInputStream dis_socket = new DataInputStream(is);
 			switch(op){
 				case "put":{
 					File file = new File(opnd);
@@ -89,15 +89,9 @@ public class TestClient {
 			socket.close();
 		}
 		else if(op.equals("view")){
-			Socket socket = new Socket(node_ip, node_port);
-			OutputStream os = socket.getOutputStream();
-			DataOutputStream dos = new DataOutputStream(os);
-			dos.writeUTF(op);
-			InputStream is = socket.getInputStream();
-			DataInputStream dis = new DataInputStream(is);
-			Integer n = dis.readInt();
+			Integer n = dis_socket.readInt();
 			for(int i=0; i<n; i++)
-				System.out.println("IP: " + dis.readUTF() + " -> membership counter: " + dis.readInt());
+				System.out.println("IP: " + dis_socket.readUTF() + " -> membership counter: " + dis_socket.readInt());
 			socket.close();
 		}
 	}
