@@ -14,7 +14,7 @@ public class UDPAnnouncer extends Thread {
 				if(this.membership_service.membership_counter%2!=0)
 					continue;
 				this.membership_service.multicast("view");
-				Thread.sleep(1000*this.membership_service.membership_counter);
+				Thread.sleep(1000*(this.membership_service.membership_counter) + (int)(Math.random()*1000));
 			}
 		} catch (Exception e) {
 			System.err.println("UDP Announcer failed.");
