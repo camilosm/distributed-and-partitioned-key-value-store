@@ -92,6 +92,10 @@ public class TestClient {
 			for(int i=0; i<n; i++)
 				System.out.println("IP: " + dis_socket.readUTF() + " -> membership counter: " + dis_socket.readInt());
 		}
+		else{
+			System.err.println("Unknow operation.");
+			System.exit(1);
+		}
 		socket.close();
 	}
 }
