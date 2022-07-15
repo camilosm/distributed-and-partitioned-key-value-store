@@ -59,10 +59,13 @@ public class Store {
 			}));
 
 			System.out.println("Started storage node at: " + ip_addr + ":" + store_port);
+
 			TCPHandler tcp_handler = new TCPHandler(store.server_socket, store.storage_service, store.membership_service);
 			tcp_handler.start();
+
 			UDPHandler udp_handler = new UDPHandler(store.membership_service.multicast_socket, store.membership_service);
 			udp_handler.start();
+
 			UDPAnnouncer udp_announcer = new UDPAnnouncer(store.membership_service);
 			udp_announcer.start();
 
