@@ -72,6 +72,8 @@ public class TCPHandler extends Thread{
 						case "leave":
 							this.membership_service.leave();
 							break;
+						default:
+							break;
 					}
 
 				}
