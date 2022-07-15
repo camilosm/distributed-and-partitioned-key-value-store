@@ -5,8 +5,22 @@ import java.net.*;
 
 public class TestClient {
 	private static void usage() {
-		System.out.println("Usage: java TestClient <node_ap> <operation> [<opnd>]");
+		System.err.println("Usage: java TestClient <node_ap> <operation> [<opnd>]");
 		System.exit(1);
+	}
+
+	private static boolean error(String response) {
+		if(!response.equals("sucess")){
+			switch(response){
+				case "key":
+					System.err.println("Wrong node.");
+					return true;
+				case "failed":
+					System.err.println("File not found.");
+					return true;
+			}
+		}
+		return false;
 	}
 
 	public static void main(String args[]) throws IOException {
@@ -41,18 +55,15 @@ public class TestClient {
 					dos.writeLong(byte_array.length);
 					dos.write(byte_array, 0, byte_array.length);
 					dis_file.close();
-					String status = dis_socket.readUTF();
-					if(status.equals("key"))
-						System.err.println("Wrong node.");
+					String response = dis_socket.readUTF();
+					error(response);
 					break;
 				}
 				case "get":{
 					dos.writeUTF(opnd);
-					String status = dis_socket.readUTF();
-					if(status.equals("failed")){
-						System.err.println("File not found.");
+					String response = dis_socket.readUTF();
+					if(error(response))
 						break;
-					}
 					long size = dis_socket.readLong();
 					File folder = new File("received");
 					if(!folder.exists())
@@ -69,9 +80,8 @@ public class TestClient {
 				}
 				case "delete":
 					dos.writeUTF(opnd);
-					String status = dis_socket.readUTF();
-					if(status.equals("key"))
-						System.err.println("Wrong node.");
+					String response = dis_socket.readUTF();
+					error(response);
 					break;
 				default:
 					break;

@@ -49,8 +49,12 @@ public class TCPHandler extends Thread{
 							break;
 						}
 						case "delete":{
-							this.storage_service.delete(opnd);
-							dos.writeUTF("sucess");
+							if(this.storage_service.contains(opnd)){
+								dos.writeUTF("sucess");
+								this.storage_service.delete(opnd);
+							}
+							else
+								dos.writeUTF("failed");
 							break;
 						}
 						default:
