@@ -80,7 +80,7 @@ public class TCPHandler extends Thread{
 				socket.close();
 			} catch (Exception e) {
 				System.err.println("TCP Handler failed.");
-				e.printStackTrace();
+				// e.printStackTrace();
 				System.exit(1);
 			}
 		}

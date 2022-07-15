@@ -1,6 +1,5 @@
 package src;
 
-import java.io.*;
 import java.net.*;
 
 public class UDPHandler extends Thread {
@@ -19,11 +18,23 @@ public class UDPHandler extends Thread {
 				DatagramPacket datagram_packet = new DatagramPacket(buffer, buffer.length);
 				this.multicast_socket.receive(datagram_packet);
 				String datagram_string = new String(datagram_packet.getData(), 0, datagram_packet.getLength());
-				System.out.println(datagram_string);
+				String datagram_data[] = datagram_string.split(" ");
+				switch(datagram_data[0]){
+					case "JOIN":
+						this.membership_service.add(datagram_data[1], Integer.valueOf(datagram_data[2]));
+						break;
+					case "LEAVE":
+						this.membership_service.del(datagram_data[1]);
+						break;
+					case "VIEW":
+						for(int i = 1; i<=datagram_data.length; i+=2)
+							this.membership_service.add(datagram_data[i], Integer.valueOf(datagram_data[i+1]));
+						break;
+				}
 			}
 			catch (Exception e){
 				System.err.println("UDP Handler failed.");
-				e.printStackTrace();
+				// e.printStackTrace();
 				System.exit(1);
 			}
 		}
