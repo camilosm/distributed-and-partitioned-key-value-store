@@ -63,6 +63,8 @@ public class Store {
 			tcp_handler.start();
 			UDPHandler udp_handler = new UDPHandler(store.membership_service.multicast_socket, store.membership_service);
 			udp_handler.start();
+			UDPAnnouncer udp_announcer = new UDPAnnouncer(store.membership_service);
+			udp_announcer.start();
 
 		} catch (IOException e) {
 			System.out.println("Failed to start storage node, please check if the address is free.");

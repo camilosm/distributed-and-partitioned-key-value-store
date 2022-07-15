@@ -15,7 +15,7 @@ public class UDPHandler extends Thread {
     public void run(){
 		while(true){
 			try{
-				byte[] buffer = new byte[1024];
+				byte[] buffer = new byte[1024*10];
 				DatagramPacket datagram_packet = new DatagramPacket(buffer, buffer.length);
 				this.multicast_socket.receive(datagram_packet);
 				String datagram_string = new String(datagram_packet.getData(), 0, datagram_packet.getLength());
@@ -28,14 +28,15 @@ public class UDPHandler extends Thread {
 						this.membership_service.del(datagram_data[1]);
 						break;
 					case "VIEW":
-						for(int i = 1; i<=datagram_data.length; i+=2)
+						for(int i = 1; i<datagram_data.length; i+=2)
 							this.membership_service.add(datagram_data[i], Integer.valueOf(datagram_data[i+1]));
 						break;
 				}
 			}
 			catch (Exception e){
 				System.err.println("UDP Handler failed.");
-				// e.printStackTrace();
+				System.err.println(e);
+				e.printStackTrace();
 				System.exit(1);
 			}
 		}

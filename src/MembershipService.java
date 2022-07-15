@@ -77,9 +77,9 @@ public class MembershipService {
 				message = "LEAVE " + this.id;
 				break;
 			case "view":
-				message = "VIEW ";
+				message = "VIEW";
 				for(Map.Entry<String,Integer> entry : this.members_counters.entrySet())
-					message += entry.getKey() + " " + entry.getValue();
+					message += " " + entry.getKey() + " " + entry.getValue();
 				break;
 		}
 		byte[] buffer = message.getBytes();

@@ -8,7 +8,9 @@ clean: terminate
 	@rm -rf store_* received
 
 store: all
-	@java src.Store 224.0.0.0 2013 127.0.0.1 2013 &
+	@java src.Store 224.0.0.1 2013 127.0.0.1 2013 &
+	@java src.Store 224.0.0.1 2013 127.0.0.2 2013 &
+	@java src.Store 224.0.0.1 2013 127.0.0.3 2013 &
 
 put: all
 	@java src.TestClient 127.0.0.1:2013 put README.md
@@ -21,6 +23,12 @@ delete: all
 
 view: all
 	@java src.TestClient 127.0.0.1:2013 view
+
+join: all
+	@java src.TestClient 127.0.0.1:2013 join
+
+leave: all
+	@java src.TestClient 127.0.0.1:2013 leave
 
 terminate:
 	@if jps | grep -q Store; then kill -9 $(shell jps | grep Store | tr -d 'Store'); fi;
