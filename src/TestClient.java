@@ -105,7 +105,8 @@ public class TestClient {
 			}
 			socket.close();
 		} catch (Exception e){
-			System.err.println(e);
+			System.err.println("Transaction failed.");
+			System.exit(1);
 		}
 	}
 }

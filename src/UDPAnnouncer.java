@@ -18,7 +18,6 @@ public class UDPAnnouncer extends Thread {
 			}
 		} catch (Exception e) {
 			System.err.println("UDP Announcer failed.");
-			// e.printStackTrace();
 			System.exit(1);
 		}
 	}

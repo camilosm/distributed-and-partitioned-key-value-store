@@ -66,8 +66,13 @@ public class Store {
 			UDPAnnouncer udp_announcer = new UDPAnnouncer(store.membership_service);
 			udp_announcer.start();
 
-		} catch (IOException e) {
-			System.out.println("Failed to start storage node, please check if the address is free.");
+		}
+		catch (BindException e){
+			System.err.println("Failed to start storage node, please check if the address is free.");
+			System.exit(1);
+		}
+		catch (IOException e) {
+			System.err.println("Node " + ip_addr + "crashed.");
 			System.exit(1);
 		}
 

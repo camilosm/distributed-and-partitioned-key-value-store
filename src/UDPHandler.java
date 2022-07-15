@@ -35,8 +35,6 @@ public class UDPHandler extends Thread {
 			}
 			catch (Exception e){
 				System.err.println("UDP Handler failed.");
-				System.err.println(e);
-				e.printStackTrace();
 				System.exit(1);
 			}
 		}
